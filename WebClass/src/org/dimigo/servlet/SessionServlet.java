@@ -21,8 +21,7 @@ public class SessionServlet extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public SessionServlet() {
-        super();
-        // TODO Auto-generated constructor stub
+       
     }
 
 	/**

@@ -20,13 +20,13 @@
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
 	      <li class="nav-item">
-	        <a class="nav-link" href="hobby.html">Hobby</a>
+	        <a class="nav-link" href="/WebClass/myblog/hobby.html">Hobby</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="favorite.html">Favorite</a>
+	        <a class="nav-link" href="/WebClass/myblog/favorite.html">Favorite</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="dream.html">Dream</a>
+	        <a class="nav-link" href="/WebClass/myblog/dream.html">Dream</a>
 	      </li>
 	    </ul>
 	    <%	String id = (String)session.getAttribute("id"); 
