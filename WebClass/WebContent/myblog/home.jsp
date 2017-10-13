@@ -37,7 +37,7 @@
     	<% } else { %>
     	<div class="nav-item dropdown">
 	      <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	    	<%= id %>님
+	    	이은후님
 	      </a>
 	      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="bd-versions">
 	      	<form action="/WebClass/bloglogout" method="post">

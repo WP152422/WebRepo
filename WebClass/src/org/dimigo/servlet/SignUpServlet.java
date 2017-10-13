@@ -29,7 +29,7 @@ public class SignUpServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //		RequestDispatcher rd = request.getRequestDispatcher("/jsp/signup.jsp");
-		response.sendRedirect("/jsp/signup.jsp");
+		response.sendRedirect("/WebClass/jsp/signup.jsp");
 //		rd.forward(request, response);
 	}
 
@@ -52,10 +52,15 @@ public class SignUpServlet extends HttpServlet {
 		else
 		{
 			request.setAttribute("msg", "error");
+			System.out.println("aaa");
+//			request.setAttribute("w_id", "\"" + id + "\"");
+//			request.setAttribute("w_pwd", "\"" + pwd + "\"");
+//			request.setAttribute("w_name", "\"" + name + "\"");
+//			request.setAttribute("w_nickname", "\"" + nickname + "\"");
 //			RequestDispatcher rd = request.getRequestDispatcher("/jsp/signup.jsp");
 //			rd.forward(request, response);
-			response.sendRedirect(request.getHeader("referer"));
 		}
+		
 	}
 
 }

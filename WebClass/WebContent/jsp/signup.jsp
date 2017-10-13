@@ -12,7 +12,7 @@
 <body>
 <div class="container">
 
-  <form id="signupForm" class="form-signin" action="/WebClass/signup" method="post">
+  <form id="signupForm" class="form-signin">
     <h2 class="form-signin-heading">Please sign up</h2>
     
     <label for="inputEmail" class="sr-only">Email address</label>
@@ -37,15 +37,44 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 
-<script>
-	<%-- 회원 가입이 실패한 경우 처리 추가 --%>
+<%-- <script>
 	<% if("error".equals(request.getAttribute("msg"))) { %>
+	
+ 		document.getElementById('inputEmail').value = <%= request.getAttribute("w_id") %>;
+		document.getElementById('inputPassword').value = <%= request.getAttribute("w_pwd") %>;
+		document.getElementById('inputName').value = <%= request.getAttribute("w_name") %>;
+		document.getElementById('inputNickName').value = <%= request.getAttribute("w_nickname") %>;
 	
 		var myModal = $('#myModal');
 		myModal.find('.modal-title').text('Sign Up Error');
 		myModal.find('.modal-body').text('회원 가입 시 오류가 발생하였습니다.');
 		myModal.modal();
 	<% } %>
+</script> --%>
+<script>
+$(document).ready(function()
+{
+	$('#signupForm').submit(function (event)
+	{
+		event.preventDefault();
+			
+		var id = $("#id").val(); //document.getElementById('id')
+		var pwd = $("#pwd").val(); //document.getElementById('pwd')
+	
+
+		$.post("/WebClass/signup", 
+		{ id: id, pwd: pwd },
+			function(data) 
+			{
+			if(<%= "error".equals(request.getAttribute("msg") ) %>){
+			var myModal = $('#myModal');
+			myModal.find('.modal-title').text('Sign Up Error');
+			myModal.find('.modal-body').text('회원 가입 시 오류가 발생하였습니다.');
+			myModal.modal();
+			}
+			});
+	})
+});
 </script>
 
 </body>
