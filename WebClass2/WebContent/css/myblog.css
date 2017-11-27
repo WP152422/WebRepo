@@ -1,0 +1,28 @@
+@CHARSET "EUC-KR";
+iframe
+{
+	frameborder="0";
+	allowfullscreen;
+}
+#maintitle
+{
+	color: white;
+}
+#maintext
+{
+	color: white;
+} 
+#profiletext
+{
+	color: white;
+}
+
+
+.jumbotron-fluid .bg-overlay {
+    height: 920px;
+    background: rgba(0,0,0,0);
+}
+.jumbotron-fluid .bg-overlay {
+    height: 920px;
+    background: rgba(0,0,0,0.5);
+}
