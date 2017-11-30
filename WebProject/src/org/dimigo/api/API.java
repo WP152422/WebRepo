@@ -5,9 +5,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.List;
 import java.util.Map;
 
 
@@ -58,11 +58,117 @@ public class API {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		API api = new API();
-		api.getJsonTeamProfile("Boston Celtics");
+		API.parsePlayerProfile("48341095-ae5a-4d61-bcc8-1b0ceed870b211");
 	}
-	
-    private static String getJsonSchedule() {
+    
+    
+    private static String getJsonTeamProfile(String teamName)
+    {
+    	try {
+            String apiURL = "https://api.sportradar.us/nba/trial/v4/en/teams/" + teamId.get(teamName) +  "/profile.json?api_key=sdakmxjufheq82thgcc4wxft"; // json 결과
+            URL url = new URL(apiURL);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("GET");
+            int responseCode = con.getResponseCode();
+            BufferedReader br;
+            if(responseCode==200) { // 정상 호출
+                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            } else {  // 에러 발생
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            }
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = br.readLine()) != null) {
+                response.append(inputLine);
+            }
+            br.close();
+            System.out.println(response);
+            return response.toString();
+            
+        } catch (Exception e) {
+        	e.printStackTrace();
+            System.out.println(e);
+        }
+		return null;
+    }
+    
+    public static Map<String, Object> parseRosters(String teamName) throws Exception
+    {
+    	try {
+    		
+    		Map<String, Object> result = new HashMap<>();
+    		
+    		System.out.println("rosters : " + teamName);
+    		String jsonResult = getJsonTeamProfile(teamName);
+    		
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse( jsonResult );
+			JSONObject jsonObject = (JSONObject) obj;
+			
+			JSONArray coaches = (JSONArray) (jsonObject.get("coaches"));
+			StringBuffer coachNames = new StringBuffer();
+			coachNames.append((String)((JSONObject)coaches.get(0)).get("full_name"));
+			for(int i=1; i<coaches.size(); i++)
+			{
+				coachNames.append(", ");
+				coachNames.append((String)((JSONObject)coaches.get(i)).get("full_name"));
+			}
+			result.put("coaches", coachNames.toString());
+			
+			JSONArray players = (JSONArray)(jsonObject.get("players"));
+			
+			List<Player> PG = new ArrayList<>();
+			List<Player> SG = new ArrayList<>();
+			List<Player> PF = new ArrayList<>();
+			List<Player> SF = new ArrayList<>();
+			List<Player> C = new ArrayList<>();
+			for(int i=0; i<players.size(); i++)
+			{
+				JSONObject player = (JSONObject) players.get(i);
+				switch((String)player.get("primary_position"))
+				{
+					case "PG":
+						Player pg = new Player((String)player.get("full_name"), (String)player.get("id"));
+						PG.add(pg);
+						break;
+					case "SG":
+						Player sg = new Player((String)player.get("full_name"), (String)player.get("id"));
+						SG.add(sg);
+						break;
+					case "PF":
+						Player pf = new Player((String)player.get("full_name"), (String)player.get("id"));
+						PF.add(pf);
+						break;
+					case "SF":
+						Player sf = new Player((String)player.get("full_name"), (String)player.get("id"));
+						SF.add(sf);
+						break;
+					case "C":
+						Player c = new Player((String)player.get("full_name"), (String)player.get("id"));
+						C.add(c);
+						break;
+					default:
+						throw new Exception((String)player.get("primary_position") + "은 없는 포지션입니다.");
+				}
+			}
+			result.put("PG", PG);
+			result.put("SG", SG);
+			result.put("PF", PF);
+			result.put("SF", SF);
+			result.put("C", C);
+			
+			
+			System.out.println(result);
+			return result;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
+    }
+    
+private static String getJsonSchedule() {
         
         try {
             String apiURL = "https://api.sportradar.us/nba/trial/v4/en/games/2017/REG/schedule.json?api_key=sdakmxjufheq82thgcc4wxft"; // json 결과
@@ -141,10 +247,10 @@ public class API {
 		}
     }
     
-    private static String getJsonTeamProfile(String teamName)
+    private static String getJsonPlayerProfile(String playerId)
     {
     	try {
-            String apiURL = "https://api.sportradar.us/nba/trial/v4/en/teams/" + teamId.get(teamName) +  "/profile.json?api_key=sdakmxjufheq82thgcc4wxft"; // json 결과
+            String apiURL = "https://api.sportradar.us/nba/trial/v4/en/players/" + playerId + "/profile.json?api_key=sdakmxjufheq82thgcc4wxft"; // json 결과
             URL url = new URL(apiURL);
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("GET");
@@ -171,73 +277,42 @@ public class API {
 		return null;
     }
     
-    public static Map<String, String> parseRosters(String teamName) throws Exception
-    {
+    public static Player parsePlayerProfile(String playerId) throws Exception {
     	try {
     		
-    		Map<String, String> result = new HashMap<>();
-    		
-    		System.out.println("rosters : " + teamName);
-    		String jsonResult = getJsonTeamProfile(teamName);
+    		System.out.println("player id : " + playerId);
+    		String jsonResult = getJsonPlayerProfile(playerId);
     		
 			JSONParser parser = new JSONParser();
 			Object obj = parser.parse( jsonResult );
 			JSONObject jsonObject = (JSONObject) obj;
 			
-			JSONArray coaches = (JSONArray) (jsonObject.get("coaches"));
-			StringBuffer coachNames = new StringBuffer();
-			coachNames.append((String)((JSONObject)coaches.get(0)).get("full_name"));
-			for(int i=1; i<coaches.size(); i++)
-			{
-				coachNames.append(", ");
-				coachNames.append((String)((JSONObject)coaches.get(i)).get("full_name"));
-			}
-			result.put("coaches", coachNames.toString());
+			Player result = new Player();
 			
-			JSONArray players = (JSONArray)(jsonObject.get("players"));
-			StringBuffer PG = new StringBuffer();
-			StringBuffer SG = new StringBuffer();
-			StringBuffer SF = new StringBuffer();
-			StringBuffer PF = new StringBuffer();
-			StringBuffer C = new StringBuffer();
-			for(int i=0; i<players.size(); i++)
-			{
-				JSONObject player = (JSONObject) players.get(i);
-				switch((String)player.get("primary_position"))
-				{
-					case "PG":
-						PG.append((String)player.get("full_name") + ", ");
-						break;
-					case "SG":
-						SG.append((String)player.get("full_name") + ", ");
-						break;
-					case "PF":
-						PF.append((String)player.get("full_name") + ", ");
-						break;
-					case "SF":
-						SF.append((String)player.get("full_name") + ", ");
-						break;
-					case "C":
-						C.append((String)player.get("full_name") + ", ");
-						break;
-					default:
-						throw new Exception((String)player.get("primary_position") + "은 없는 포지션입니다.");
-				}
-			}
-			result.put("PG", PG.toString());
-			result.put("SG", SG.toString());
-			result.put("PF", PF.toString());
-			result.put("SF", SF.toString());
-			result.put("C", C.toString());
+			result.setId(playerId);
+			result.setName((String)jsonObject.get("full_name"));
+			result.setHeight((long)jsonObject.get("height"));
+			result.setWeight((long)jsonObject.get("weight"));
+			result.setPosition((String)jsonObject.get("primary_position"));
+			result.setBirthdate((String)jsonObject.get("birthdate"));
+			result.setCollege((String)jsonObject.get("college"));
 			
+			JSONArray seasons = (JSONArray)jsonObject.get("seasons");
+			JSONArray teams = (JSONArray)((JSONObject)seasons.get(0)).get("teams");
+			Map<String, Double> total = (Map<String, Double>)((JSONObject)teams.get(0)).get("total");
+			Map<String, Double> avg = (Map<String, Double>)((JSONObject)teams.get(0)).get("average");
+			result.setTotal(total);
+			result.setAverage(avg);
 			
-			System.out.println(result);
+			System.out.println(total);
+			System.out.println(avg);
+			
 			return result;
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw e;
+			throw new Exception("올바른 Player ID를 입력해주십시오");
 		}
     }
 

@@ -15,6 +15,7 @@ import org.dimigo.action.IAction;
 import org.dimigo.action.ListAction;
 import org.dimigo.action.LoginAction;
 import org.dimigo.action.LogoutAction;
+import org.dimigo.action.SearchPlayerAction;
 import org.dimigo.action.SessionAction;
 import org.dimigo.action.SignupAction;
 import org.dimigo.action.UpdateTeamAction;
@@ -45,6 +46,7 @@ public class ActionServlet extends HttpServlet {
     	actions.put("list", new ListAction());
     	actions.put("signup", new SignupAction());
     	actions.put("updateTeam", new UpdateTeamAction());
+    	actions.put("searchplayer", new SearchPlayerAction());
     }
 
 	/**
