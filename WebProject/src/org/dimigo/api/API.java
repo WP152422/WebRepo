@@ -5,7 +5,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,9 +60,8 @@ public class API {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		API.parsePlayerProfile("48341095-ae5a-4d61-bcc8-1b0ceed870b211");
+		API.getJsonBoxScore("c3c66485-e320-4656-b9ef-27bd2b9d0f32");
 	}
-    
     
     private static String getJsonTeamProfile(String teamName)
     {
@@ -92,6 +93,45 @@ public class API {
 		return null;
     }
     
+    public static Player parsePlayerProfile(String playerId) throws Exception {
+    	try {
+    		
+    		System.out.println("player id : " + playerId);
+    		String jsonResult = getJsonPlayerProfile(playerId);
+    		
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse( jsonResult );
+			JSONObject jsonObject = (JSONObject) obj;
+			
+			Player result = new Player();
+			
+			result.setId(playerId);
+			result.setName((String)jsonObject.get("full_name"));
+			result.setHeight((long)jsonObject.get("height"));
+			result.setWeight((long)jsonObject.get("weight"));
+			result.setPosition((String)jsonObject.get("primary_position"));
+			result.setBirthdate((String)jsonObject.get("birthdate"));
+			result.setCollege((String)jsonObject.get("college"));
+			
+			JSONArray seasons = (JSONArray)jsonObject.get("seasons");
+			JSONArray teams = (JSONArray)((JSONObject)seasons.get(0)).get("teams");
+			Map<String, Double> total = (Map<String, Double>)((JSONObject)teams.get(0)).get("total");
+			Map<String, Double> avg = (Map<String, Double>)((JSONObject)teams.get(0)).get("average");
+			result.setTotal(total);
+			result.setAverage(avg);
+			
+			System.out.println(total);
+			System.out.println(avg);
+			
+			return result;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new Exception("올바른 Player ID를 입력해주십시오");
+		}
+    }
+
     public static Map<String, Object> parseRosters(String teamName) throws Exception
     {
     	try {
@@ -168,7 +208,41 @@ public class API {
 		}
     }
     
-private static String getJsonSchedule() {
+    public static Map<String, String> parsePlayers(String teamName) throws Exception
+    {
+    	try {
+    		
+    		Map<String, String> result = new HashMap<>();
+    		
+    		System.out.println("rosters : " + teamName);
+    		String jsonResult = getJsonTeamProfile(teamName);
+    		
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse( jsonResult );
+			JSONObject jsonObject = (JSONObject) obj;
+			
+			
+			JSONArray players = (JSONArray)(jsonObject.get("players"));
+			
+			for(int i=0; i<players.size(); i++)
+			{
+				JSONObject player = (JSONObject) players.get(i);
+				result.put((String)player.get("full_name"), (String)player.get("id"));
+			}
+			
+			
+			
+			System.out.println(result);
+			return result;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
+    }
+    
+    private static String getJsonSchedule() {
         
         try {
             String apiURL = "https://api.sportradar.us/nba/trial/v4/en/games/2017/REG/schedule.json?api_key=sdakmxjufheq82thgcc4wxft"; // json 결과
@@ -227,7 +301,7 @@ private static String getJsonSchedule() {
 					JSONObject calInfo = new JSONObject();
 					calInfo.put("title", "vs " + away);
 					calInfo.put("start", date.substring(0, 10));
-					result.add(calInfo);
+					result.add(calInfo);	
 				}
 				else if(away.equals(teamName))
 				{
@@ -277,43 +351,144 @@ private static String getJsonSchedule() {
 		return null;
     }
     
-    public static Player parsePlayerProfile(String playerId) throws Exception {
+    private static String getJsonDailySchedule()
+    {
+    	try {
+    		Calendar cal = Calendar.getInstance();
+    		SimpleDateFormat fmt = new SimpleDateFormat("yyyy/MM/dd");
+    		String date = fmt.format(cal.getTime());
+    		StringBuilder sb = new StringBuilder(date);
+    		sb.replace(9, 10, Integer.toString(Integer.parseInt(date.substring(9, 10)) -1)); 
+    		date = sb.toString();
+    		
+            String apiURL = "https://api.sportradar.us/nba/trial/v4/en/games/" + date + "/schedule.json?api_key=sdakmxjufheq82thgcc4wxft"; // json 결과
+            URL url = new URL(apiURL);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("GET");
+            int responseCode = con.getResponseCode();
+            BufferedReader br;
+            if(responseCode==200) { // 정상 호출
+                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            } else {  // 에러 발생
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            }
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = br.readLine()) != null) {
+                response.append(inputLine);
+            }
+            br.close();
+            System.out.println(response);
+            return response.toString();
+            
+        } catch (Exception e) {
+        	e.printStackTrace();
+            System.out.println(e);
+        }
+		return null;
+    }
+
+    public static String parseDailySchedule(String teamName) throws Exception {
     	try {
     		
-    		System.out.println("player id : " + playerId);
-    		String jsonResult = getJsonPlayerProfile(playerId);
+    		String jsonResult = getJsonDailySchedule();
     		
 			JSONParser parser = new JSONParser();
 			Object obj = parser.parse( jsonResult );
 			JSONObject jsonObject = (JSONObject) obj;
 			
-			Player result = new Player();
 			
-			result.setId(playerId);
-			result.setName((String)jsonObject.get("full_name"));
-			result.setHeight((long)jsonObject.get("height"));
-			result.setWeight((long)jsonObject.get("weight"));
-			result.setPosition((String)jsonObject.get("primary_position"));
-			result.setBirthdate((String)jsonObject.get("birthdate"));
-			result.setCollege((String)jsonObject.get("college"));
+			JSONArray games = (JSONArray) (jsonObject.get("games"));
 			
-			JSONArray seasons = (JSONArray)jsonObject.get("seasons");
-			JSONArray teams = (JSONArray)((JSONObject)seasons.get(0)).get("teams");
-			Map<String, Double> total = (Map<String, Double>)((JSONObject)teams.get(0)).get("total");
-			Map<String, Double> avg = (Map<String, Double>)((JSONObject)teams.get(0)).get("average");
-			result.setTotal(total);
-			result.setAverage(avg);
 			
-			System.out.println(total);
-			System.out.println(avg);
+			JSONArray result = new JSONArray();
 			
-			return result;
+			for(int i=0; i<games.size(); i++)
+			{
+				JSONObject game = (JSONObject) games.get(i);
+				JSONObject home = (JSONObject) game.get("home");
+				JSONObject away = (JSONObject) game.get("away");
+				String homeName = (String) home.get("name");
+				String awayName = (String) away.get("name");
+				
+				if(teamName.equals(homeName))
+				{
+					return awayName + ":" + game.get("id");
+				}
+				if(teamName.equals(awayName))
+				{
+					return homeName + ":" + game.get("id");
+				}
+			}
+			return "None";
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new Exception("올바른 Player ID를 입력해주십시오");
+			throw e;
 		}
     }
+    
+    private static String getJsonBoxScore(String gameId)
+    {
+    	try {   	   		
+            String apiURL = "https://api.sportradar.us/nba/trial/v4/en/games/" + gameId + "/boxscore.json?api_key=sdakmxjufheq82thgcc4wxft"; // json 결과
+            URL url = new URL(apiURL);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("GET");
+            int responseCode = con.getResponseCode();
+            BufferedReader br;
+            if(responseCode==200) { // 정상 호출
+                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            } else {  // 에러 발생
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            }
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = br.readLine()) != null) {
+                response.append(inputLine);
+            }
+            br.close();
+            System.out.println(response);
+            return response.toString();
+            
+        } catch (Exception e) {
+        	e.printStackTrace();
+            System.out.println(e);
+        }
+		return null;
+    }
+    
+    public static String parseBoxScore(String gameId, String teamName) throws Exception {
+    	try {
+    		
+    		String jsonResult = getJsonBoxScore(gameId);
+    		
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse( jsonResult );
+			JSONObject jsonObject = (JSONObject) obj;
+			
+			JSONObject home = (JSONObject)jsonObject.get("home");
+			JSONObject away = (JSONObject)jsonObject.get("away");
+			String homeName = (String)home.get("market") + " " + (String)home.get("name");
+			String awayName = (String)away.get("market") + " " + (String)away.get("name");			
+			if(teamName.equals(homeName))
+			{
+				return home.get("points") + ":" + away.get("points");
+			}
+			if(teamName.equals(awayName))
+			{
+				return away.get("points") + ":" + home.get("points");
+			}
+		
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
+		return "error";
+    }
+    
 
 }

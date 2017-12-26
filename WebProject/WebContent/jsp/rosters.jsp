@@ -53,7 +53,8 @@ function menu_out(e) {
     <tr>
       <th scope="row"><%= i+1 %></th>
       <td><%= pg.get(i).getName() %></td>
-      <td><%= pg.get(i).getId() %></td>
+      <td id=pg<%= i %>><%= pg.get(i).getId() %></td>
+      <td><a style="text-align: right; text-align: top; size: 5px;">copy</a></td>
     </tr>
     <% } %>
   </tbody>
@@ -72,7 +73,7 @@ function menu_out(e) {
     <% for(int i=0; i<sg.size(); i++) {%>
     <tr>
       <th scope="row"><%= i+1 %></th>
-      <td><%= sg.get(i).getName() %></td>
+      <td id=sg<%= i %>><%= sg.get(i).getName() %></td>
       <td><%= sg.get(i).getId() %></td>
     </tr>
     <% } %>
@@ -94,7 +95,7 @@ function menu_out(e) {
     <tr>
       <th scope="row"><%= i+1 %></th>
       <td><%= c.get(i).getName() %></td>
-      <td><%= c.get(i).getId() %></td>
+      <td id=c<%= i %>><%= c.get(i).getId() %></td>
     </tr>
     <% } %>
   </tbody>
@@ -115,7 +116,7 @@ function menu_out(e) {
     <tr>
       <th scope="row"><%= i+1 %></th>
       <td><%= sf.get(i).getName() %></td>
-      <td><%= sf.get(i).getId() %></td>
+      <td id=sf<%= i %>><%= sf.get(i).getId() %></td>
     </tr>
     <% } %>
   </tbody>

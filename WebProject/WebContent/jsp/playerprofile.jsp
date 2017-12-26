@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.List"%>
 <%@ page import="org.dimigo.api.API" %>
 <%@ page import="org.dimigo.api.Player" %>
 <%@ page import="org.dimigo.vo.UserVO" %>
@@ -19,17 +21,27 @@ function menu_over(e) {
 function menu_out(e) {
 	e.setAttribute("class", "nav-item");
 }
+
 </script>
 </head>
 <body>
+<%	if (((UserVO)session.getAttribute("user")).getTeamName() == null) { %>
+	<jsp:forward page="/jsp/subscribe.jsp"></jsp:forward>
+<% } %>
 	<%@ include file="menu.jsp" %>
 <div align="center">
-	<div style="width: 50%; margin-top: 50px;" align="center">
-		<form action="${ contextPath }/searchplayer.do" method="post" class="form-signin">
-			<input type="text" name="playerId" class="form-control" required>
-			<button type="submit" class="btn btn-primary">Search</button>
-		</form>
-	</div>
+	<form action="${ contextPath }/searchplayer.do" method="post" >
+		<select class="form-control" id="playerSelect" name="playerName">
+	  	<%
+	  		Map<String, String> pl = (Map<String, String>)session.getAttribute("playerList");
+	  		for(String playerName : pl.keySet())
+	  		{
+	  	%>
+	  	<option><%= playerName %></option>
+	  	<% } %>
+		</select>
+		<button type="submit" class="btn btn-primary">Search</button>
+	</form>
 </div>
 <div style="margin-left: 20px">
 <p class="font-weight-bold">Name : ${ player.getName() }</p>

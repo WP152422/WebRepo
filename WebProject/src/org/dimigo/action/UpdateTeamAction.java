@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.dimigo.api.API;
 import org.dimigo.service.UserService;
 import org.dimigo.util.CommonUtil;
 import org.dimigo.vo.UserVO;
@@ -46,6 +47,9 @@ public class UpdateTeamAction implements IAction{
 			
 			
 			((UserVO) session.getAttribute("user")).setTeamName(teamName);
+			
+
+			session.setAttribute("playerList", API.parsePlayers(teamName));
 
 			RequestDispatcher rd = request.getRequestDispatcher("/jsp/subscribe.jsp");
 			rd.forward(request, response);

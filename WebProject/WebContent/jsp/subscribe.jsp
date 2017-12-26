@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.List"%>
+<%@ page import="org.dimigo.api.API" %>
 <c:set var="contextPath" value="${ pageContext.request.contextPath }" /> 
 <!DOCTYPE html>
 <html>
@@ -29,7 +30,12 @@ function change_image(e)
 	document.getElementById('sb-button').disabled = false;
 }
 </script>
-
+<%	
+	if (((UserVO)session.getAttribute("user")).getTeamName() != null) 
+	{ 
+		session.setAttribute("playerList", API.parsePlayers(((UserVO)session.getAttribute("user")).getTeamName()));	
+	} 
+%>
 
 </head>
 <body>

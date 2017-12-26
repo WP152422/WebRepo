@@ -3,6 +3,8 @@
  */
 package org.dimigo.action;
 
+import java.util.Map;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +29,8 @@ public class SearchPlayerAction implements IAction{
 
 	@Override
 	public void excute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String playerId = request.getParameter("playerId");
+		String playerName = request.getParameter("playerName");
+		String playerId = ((Map<String, String>)request.getSession().getAttribute("playerList")).get(playerName);
 		try{
 			Player player = API.parsePlayerProfile(playerId);
 			request.setAttribute("player", player);
@@ -36,7 +39,6 @@ public class SearchPlayerAction implements IAction{
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
 			request.setAttribute("error", e.getMessage());
 			RequestDispatcher rd = request.getRequestDispatcher("/jsp/playerprofile.jsp");
 			rd.forward(request, response);

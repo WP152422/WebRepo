@@ -37,6 +37,7 @@
 		$('#calendar').fullCalendar({
 			editable: true,
 			events: <%= API.parseSchedule(((UserVO)session.getAttribute("user")).getTeamName()) %>
+			
 		});
 		
 	});
