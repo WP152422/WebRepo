@@ -13,6 +13,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 <title>Insert title here</title>
+<style type="text/css">
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+</style>
 <script>
 function menu_over(e) {
 	e.setAttribute("class", "nav-item active");
@@ -37,7 +40,7 @@ function menu_out(e) {
 		String coaches = ((String)roaster.get("coaches")).substring(0, ((String)roaster.get("coaches")).length() -1);
 	%>
 
-<div style="margin-left: 50px; margin-top: 50px;">
+<div style="margin-left: 50px; margin-top: 50px; margin-bottom: 50px;">
 <h1>Point Guard</h1>
 <br>
 <table class="table">
@@ -45,16 +48,19 @@ function menu_out(e) {
     <tr>
       <th scope="col"></th>
       <th scope="col">Name</th>
-      <th scope="col">Id</th>
+      <th scope="col">Height</th>
+      <th scope="col">weight</th>
+      <th scope="col">Number</th>
     </tr>
   </thead>
   <tbody>
     <% for(int i=0; i<pg.size(); i++) {%>
     <tr>
-      <th scope="row"><%= i+1 %></th>
-      <td><%= pg.get(i).getName() %></td>
-      <td id=pg<%= i %>><%= pg.get(i).getId() %></td>
-      <td><a style="text-align: right; text-align: top; size: 5px;">copy</a></td>
+      <th scope="row" style="width: 10px"><%= i+1 %></th>
+      <td style="width: 300px"><%= pg.get(i).getName() %></td>
+      <td style="width: 300px"><%= pg.get(i).getHeight() %></td>
+      <td style="width: 300px"><%= pg.get(i).getWeight() %></td>
+      <td style="width: 300px"><%= pg.get(i).getNumber() %></td>
     </tr>
     <% } %>
   </tbody>
@@ -66,15 +72,19 @@ function menu_out(e) {
     <tr>
       <th scope="col"></th>
       <th scope="col">Name</th>
-      <th scope="col">Id</th>
+      <th scope="col">Height</th>
+      <th scope="col">weight</th>
+      <th scope="col">Number</th>
     </tr>
   </thead>
   <tbody>
     <% for(int i=0; i<sg.size(); i++) {%>
     <tr>
-      <th scope="row"><%= i+1 %></th>
-      <td id=sg<%= i %>><%= sg.get(i).getName() %></td>
-      <td><%= sg.get(i).getId() %></td>
+      <th scope="row" style="width: 10px"><%= i+1 %></th>
+      <td style="width: 300px"><%= sg.get(i).getName() %></td>
+      <td style="width: 300px"><%= sg.get(i).getHeight() %></td>
+      <td style="width: 300px"><%= sg.get(i).getWeight() %></td>
+      <td style="width: 300px"><%= sg.get(i).getNumber() %></td>
     </tr>
     <% } %>
   </tbody>
@@ -87,15 +97,19 @@ function menu_out(e) {
     <tr>
       <th scope="col"></th>
       <th scope="col">Name</th>
-      <th scope="col">Id</th>
+      <th scope="col">Height</th>
+      <th scope="col">weight</th>
+      <th scope="col">Number</th>
     </tr>
   </thead>
   <tbody>
     <% for(int i=0; i<c.size(); i++) {%>
     <tr>
-      <th scope="row"><%= i+1 %></th>
-      <td><%= c.get(i).getName() %></td>
-      <td id=c<%= i %>><%= c.get(i).getId() %></td>
+      <th scope="row" style="width: 10px"><%= i+1 %></th>
+      <td style="width: 300px"><%= c.get(i).getName() %></td>
+      <td style="width: 300px"><%= c.get(i).getHeight() %></td>
+      <td style="width: 300px"><%= c.get(i).getWeight() %></td>
+      <td style="width: 300px"><%= c.get(i).getNumber() %></td>
     </tr>
     <% } %>
   </tbody>
@@ -108,15 +122,19 @@ function menu_out(e) {
     <tr>
       <th scope="col"></th>
       <th scope="col">Name</th>
-      <th scope="col">Id</th>
+      <th scope="col">Height</th>
+      <th scope="col">weight</th>
+      <th scope="col">Number</th>
     </tr>
   </thead>
   <tbody>
     <% for(int i=0; i<sf.size(); i++) {%>
     <tr>
-      <th scope="row"><%= i+1 %></th>
-      <td><%= sf.get(i).getName() %></td>
-      <td id=sf<%= i %>><%= sf.get(i).getId() %></td>
+      <th scope="row" style="width: 10px"><%= i+1 %></th>
+      <td style="width: 300px"><%= sf.get(i).getName() %></td>
+      <td style="width: 300px"><%= sf.get(i).getHeight() %></td>
+      <td style="width: 300px"><%= sf.get(i).getWeight() %></td>
+      <td style="width: 300px"><%= sf.get(i).getNumber() %></td>
     </tr>
     <% } %>
   </tbody>
@@ -129,15 +147,19 @@ function menu_out(e) {
     <tr>
       <th scope="col"></th>
       <th scope="col">Name</th>
-      <th scope="col">Id</th>
+      <th scope="col">Height</th>
+      <th scope="col">weight</th>
+      <th scope="col">Number</th>
     </tr>
   </thead>
   <tbody>
     <% for(int i=0; i<pf.size(); i++) {%>
     <tr>
-      <th scope="row"><%= i+1 %></th>
-      <td><%= pf.get(i).getName() %></td>
-      <td><%= pf.get(i).getId() %></td>
+      <th scope="row" style="width: 10px"><%= i+1 %></th>
+      <td style="width: 300px"><%= pf.get(i).getName() %></td>
+      <td style="width: 300px"><%= pf.get(i).getHeight() %></td>
+      <td style="width: 300px"><%= pf.get(i).getWeight() %></td>
+      <td style="width: 300px"><%= pf.get(i).getNumber() %></td>
     </tr>
     <% } %>
   </tbody>

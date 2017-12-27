@@ -21,11 +21,10 @@ public class Player {
 	String name;
 	String id;
 
-	long height;
-	long weight;
+	String height;
+	String weight;
 	String position;
-	String college;
-	String birthdate;
+	String number;
 	Map<String, Double> total;
 	Map<String, Double> average;
 
@@ -33,9 +32,8 @@ public class Player {
 
 	}
 
-	public Player(String name, String id) {
+	public Player(String name) {
 		this.name = name;
-		this.id = id;
 	}
 
 	public String getName() {
@@ -54,20 +52,24 @@ public class Player {
 		this.id = id;
 	}
 
-	public long getHeight() {
+	public String getHeight() {
 		return height;
 	}
 
 	public void setHeight(long height) {
-		this.height = height;
+		long tmp = height;
+		tmp *= 2.54;
+		this.height = Long.toString(tmp);
 	}
 
-	public long getWeight() {
+	public String getWeight() {
 		return weight;
 	}
 
 	public void setWeight(long weight) {
-		this.weight = weight;
+		long tmp = weight;
+		tmp *= 0.453592;
+		this.weight = Long.toString(tmp);
 	}
 
 	public String getPosition() {
@@ -78,20 +80,12 @@ public class Player {
 		this.position = position;
 	}
 
-	public String getCollege() {
-		return college;
+	public String getNumber() {
+		return number;
 	}
-
-	public void setCollege(String college) {
-		this.college = college;
-	}
-
-	public String getBirthdate() {
-		return birthdate;
-	}
-
-	public void setBirthdate(String birthdate) {
-		this.birthdate = birthdate;
+	
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
 	public Map<String, Double> getTotal() {

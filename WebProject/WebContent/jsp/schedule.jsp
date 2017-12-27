@@ -70,7 +70,7 @@ function menu_out(e) {
 <body>
 	<%@ include file="menu.jsp" %>
 
-	<div id='calendar'></div>
+	<div id='calendar' style="width: 95%; height: 100%"></div>
 
 
 </body>

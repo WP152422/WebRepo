@@ -65,7 +65,7 @@ public class LoginAction implements IAction{
 
 				session.setAttribute("user", result);
 				
-				RequestDispatcher rd = request.getRequestDispatcher("/jsp/subscribe.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("/jsp/dailygame.jsp");
 				rd.forward(request, response);
 			}
 			else{

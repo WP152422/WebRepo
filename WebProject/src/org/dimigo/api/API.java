@@ -60,7 +60,8 @@ public class API {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		API.getJsonBoxScore("c3c66485-e320-4656-b9ef-27bd2b9d0f32");
+//		API.parseBoxScore("76286477-8a66-4080-94c1-a5c067d8f4db", "Boston Celtics");
+		API.parseRosters("Boston Celtics");
 	}
     
     private static String getJsonTeamProfile(String teamName)
@@ -83,7 +84,7 @@ public class API {
                 response.append(inputLine);
             }
             br.close();
-            System.out.println(response);
+            System.out.println("getJsonPlayerProfile : " + response);
             return response.toString();
             
         } catch (Exception e) {
@@ -110,8 +111,7 @@ public class API {
 			result.setHeight((long)jsonObject.get("height"));
 			result.setWeight((long)jsonObject.get("weight"));
 			result.setPosition((String)jsonObject.get("primary_position"));
-			result.setBirthdate((String)jsonObject.get("birthdate"));
-			result.setCollege((String)jsonObject.get("college"));
+
 			
 			JSONArray seasons = (JSONArray)jsonObject.get("seasons");
 			JSONArray teams = (JSONArray)((JSONObject)seasons.get(0)).get("teams");
@@ -120,8 +120,7 @@ public class API {
 			result.setTotal(total);
 			result.setAverage(avg);
 			
-			System.out.println(total);
-			System.out.println(avg);
+
 			
 			return result;
 			
@@ -168,23 +167,38 @@ public class API {
 				switch((String)player.get("primary_position"))
 				{
 					case "PG":
-						Player pg = new Player((String)player.get("full_name"), (String)player.get("id"));
+						Player pg = new Player((String)player.get("full_name"));
+						pg.setHeight((long)player.get("height"));
+						pg.setWeight((long)player.get("weight"));
+						pg.setNumber((String)player.get("jersey_number"));
 						PG.add(pg);
 						break;
 					case "SG":
-						Player sg = new Player((String)player.get("full_name"), (String)player.get("id"));
+						Player sg = new Player((String)player.get("full_name"));
+						sg.setHeight((long)player.get("height"));
+						sg.setWeight((long)player.get("weight"));
+						sg.setNumber((String)player.get("jersey_number"));
 						SG.add(sg);
 						break;
 					case "PF":
-						Player pf = new Player((String)player.get("full_name"), (String)player.get("id"));
+						Player pf = new Player((String)player.get("full_name"));
+						pf.setHeight((long)player.get("height"));
+						pf.setWeight((long)player.get("weight"));
+						pf.setNumber((String)player.get("jersey_number"));
 						PF.add(pf);
 						break;
 					case "SF":
-						Player sf = new Player((String)player.get("full_name"), (String)player.get("id"));
+						Player sf = new Player((String)player.get("full_name"));
+						sf.setHeight((long)player.get("height"));
+						sf.setWeight((long)player.get("weight"));
+						sf.setNumber((String)player.get("jersey_number"));
 						SF.add(sf);
 						break;
 					case "C":
-						Player c = new Player((String)player.get("full_name"), (String)player.get("id"));
+						Player c = new Player((String)player.get("full_name"));
+						c.setHeight((long)player.get("height"));
+						c.setWeight((long)player.get("weight"));
+						c.setNumber((String)player.get("jersey_number"));
 						C.add(c);
 						break;
 					default:
@@ -198,7 +212,7 @@ public class API {
 			result.put("C", C);
 			
 			
-			System.out.println(result);
+
 			return result;
 			
 		} catch (Exception e) {
@@ -214,7 +228,7 @@ public class API {
     		
     		Map<String, String> result = new HashMap<>();
     		
-    		System.out.println("rosters : " + teamName);
+    		System.out.println("players : " + teamName);
     		String jsonResult = getJsonTeamProfile(teamName);
     		
 			JSONParser parser = new JSONParser();
@@ -232,7 +246,7 @@ public class API {
 			
 			
 			
-			System.out.println(result);
+
 			return result;
 			
 		} catch (Exception e) {
@@ -262,7 +276,7 @@ public class API {
                 response.append(inputLine);
             }
             br.close();
-            System.out.println(response);
+
             return response.toString();
             
         } catch (Exception e) {
@@ -311,7 +325,7 @@ public class API {
 					result.add(calInfo);
 				}
 			}
-			System.out.println(result);
+
 			return result.toString();
 			
 		} catch (Exception e) {
@@ -341,7 +355,7 @@ public class API {
                 response.append(inputLine);
             }
             br.close();
-            System.out.println(response);
+
             return response.toString();
             
         } catch (Exception e) {
@@ -360,7 +374,7 @@ public class API {
     		StringBuilder sb = new StringBuilder(date);
     		sb.replace(9, 10, Integer.toString(Integer.parseInt(date.substring(9, 10)) -1)); 
     		date = sb.toString();
-    		
+    		System.out.println("today is " + date);
             String apiURL = "https://api.sportradar.us/nba/trial/v4/en/games/" + date + "/schedule.json?api_key=sdakmxjufheq82thgcc4wxft"; // json 결과
             URL url = new URL(apiURL);
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
@@ -371,6 +385,7 @@ public class API {
                 br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             } else {  // 에러 발생
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+                System.out.println(br);
             }
             String inputLine;
             StringBuffer response = new StringBuffer();
@@ -378,7 +393,7 @@ public class API {
                 response.append(inputLine);
             }
             br.close();
-            System.out.println(response);
+            System.out.println("aa" + response);
             return response.toString();
             
         } catch (Exception e) {
@@ -395,13 +410,13 @@ public class API {
     		
 			JSONParser parser = new JSONParser();
 			Object obj = parser.parse( jsonResult );
+			
 			JSONObject jsonObject = (JSONObject) obj;
 			
 			
 			JSONArray games = (JSONArray) (jsonObject.get("games"));
 			
-			
-			JSONArray result = new JSONArray();
+			System.out.println("bb" + teamName);
 			
 			for(int i=0; i<games.size(); i++)
 			{
@@ -411,13 +426,17 @@ public class API {
 				String homeName = (String) home.get("name");
 				String awayName = (String) away.get("name");
 				
+				System.out.println(i +" " + homeName);
+				System.out.println(i +" " +awayName);
+				System.out.println((String)game.get("id"));
+				
 				if(teamName.equals(homeName))
 				{
-					return awayName + ":" + game.get("id");
+					return awayName + ":" + (String)game.get("id");
 				}
 				if(teamName.equals(awayName))
 				{
-					return homeName + ":" + game.get("id");
+					return homeName + ":" + (String)game.get("id");
 				}
 			}
 			return "None";
@@ -449,7 +468,7 @@ public class API {
                 response.append(inputLine);
             }
             br.close();
-            System.out.println(response);
+            System.out.println("mm" + response);
             return response.toString();
             
         } catch (Exception e) {
@@ -461,7 +480,7 @@ public class API {
     
     public static String parseBoxScore(String gameId, String teamName) throws Exception {
     	try {
-    		
+    		System.out.println(gameId + ":" + teamName + "ll");
     		String jsonResult = getJsonBoxScore(gameId);
     		
 			JSONParser parser = new JSONParser();
@@ -470,15 +489,19 @@ public class API {
 			
 			JSONObject home = (JSONObject)jsonObject.get("home");
 			JSONObject away = (JSONObject)jsonObject.get("away");
+			System.out.println("hh"+ home);
+			System.out.println("hh" +away);
 			String homeName = (String)home.get("market") + " " + (String)home.get("name");
 			String awayName = (String)away.get("market") + " " + (String)away.get("name");			
+			System.out.println("cc" + homeName);
+			System.out.println("cc" + awayName);
 			if(teamName.equals(homeName))
 			{
-				return home.get("points") + ":" + away.get("points");
+				return Long.toString((long)home.get("points")) + ":" + Long.toString((long)away.get("points"));
 			}
 			if(teamName.equals(awayName))
 			{
-				return away.get("points") + ":" + home.get("points");
+				return Long.toString((long)away.get("points")) + ":" + Long.toString((long)home.get("points"));
 			}
 		
 			

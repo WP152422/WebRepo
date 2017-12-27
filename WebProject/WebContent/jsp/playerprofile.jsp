@@ -29,9 +29,9 @@ function menu_out(e) {
 	<jsp:forward page="/jsp/subscribe.jsp"></jsp:forward>
 <% } %>
 	<%@ include file="menu.jsp" %>
-<div align="center">
-	<form action="${ contextPath }/searchplayer.do" method="post" >
-		<select class="form-control" id="playerSelect" name="playerName">
+<div align="center" style="float:left; width:10%; padding-top: 50px;">
+	<form action="${ contextPath }/searchplayer.do" method="post" style="display:table-cell; vertical-align: middle;">
+		<select class="form-control" id="playerSelect" name="playerName" >
 	  	<%
 	  		Map<String, String> pl = (Map<String, String>)session.getAttribute("playerList");
 	  		for(String playerName : pl.keySet())
@@ -43,21 +43,19 @@ function menu_out(e) {
 		<button type="submit" class="btn btn-primary">Search</button>
 	</form>
 </div>
-<div style="margin-left: 20px">
-<p class="font-weight-bold">Name : ${ player.getName() }</p>
-<p class="font-weight-bold">Height : ${ player.getHeight() }</p>
-<p class="font-weight-bold">Weight : ${ player.getWeight() }</p>
-<p class="font-weight-bold">Position : ${ player.getPosition() }</p>
-<p class="font-weight-bold">College : ${ player.getCollege() }</p>
-<p class="font-weight-bold">BirthDate : ${ player.getBirthdate() }</p>
-<p class="font-weight-bold">Total</p>
-<c:forEach var="total" items="${ player.getTotal().keySet() }">
-<p class="font-weight-light">   -${ total} : ${ player.getTotal().get(total) }</p>
-</c:forEach>
-<p class="font-weight-bold">Average : </p>
-<c:forEach var="avg" items="${ player.getAverage().keySet() }">
-<p class="font-weight-light">   -${ avg } : ${ player.getAverage().get(avg) }</p>
-</c:forEach>
+<div style="float:left; width: 90%; margin-top: 50px; padding-left: 50px;">
+	<p class="font-weight-bold">Name : ${ player.getName() }</p>
+	<p class="font-weight-bold">Height : ${ player.getHeight() } cm</p>
+	<p class="font-weight-bold">Weight : ${ player.getWeight() } kg</p>
+	<p class="font-weight-bold">Position : ${ player.getPosition() }</p>
+	<p class="font-weight-bold">Total</p>
+	<c:forEach var="total" items="${ player.getTotal().keySet() }">
+	<p class="font-weight-light">   -${ total} : ${ player.getTotal().get(total) }</p>
+	</c:forEach>
+	<p class="font-weight-bold">Average</p>
+	<c:forEach var="avg" items="${ player.getAverage().keySet() }">
+	<p class="font-weight-light">   -${ avg } : ${ player.getAverage().get(avg) }</p>
+	</c:forEach>
 
 </div>
 

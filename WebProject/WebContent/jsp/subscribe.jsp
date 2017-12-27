@@ -11,6 +11,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 <title>Insert title here</title>
+<style type="text/css">
+::-webkit-scrollbar {
+
+display:none;
+
+} 
+</style>
 <script>
 function menu_over(e) {
 	e.setAttribute("class", "nav-item active");
@@ -38,7 +45,7 @@ function change_image(e)
 %>
 
 </head>
-<body>
+<body style="background-color: #212121;">
 	<%@ include file="menu.jsp" %>
 
 <% 
@@ -75,24 +82,26 @@ function change_image(e)
 	teams.add("Atlanta Hawks");
 %>
 
-<div style="border:1px soild; float:left; width:35%">
-	<div class="list-group" style="max-height: 900px; overflow-y: scroll;">
+<div style="border:1px soild; float:left; width:15%; text-align: center;">
+	<div class="list-group" style="max-height: 900px; overflow-y: scroll;  color: white; -ms-overflow-style: none;">
 		<c:forEach var="team" items="<%= teams %>">
-			<a class="list-group-item list-group-item-action" onclick="change_image(this);">${ team }</a>
+			<a class="list-group-item list-group-item-action" onclick="change_image(this);" style="background-color: #212121; ">${ team }</a>
 		</c:forEach>
+		
 	</div>
-</div>
-<div style="border:1px soild; float:left; width:65%">
-	<img id="logo" src="${ contextPath }/image/NBA logo.jpg" width="100%">
-	<br>
 	<div align="center">
 		<form action="${ contextPath }/updateTeam.do" method="post">
 			<br>
-			<input type="text" class="form-control form-control-lg" id="selected-team" aria-describedby="emailHelp" placeholder="Select team" name="teamName" style="text-align: center;" readonly="readonly">
-			<br><br>
+			<br>
+			<br>
 			<button type="submit" id="sb-button" class="btn btn-primary btn-lg" disabled="disabled">Subscribe</button>
+			<input type="hidden" class="form-control form-control-lg" id="selected-team" aria-describedby="emailHelp" placeholder="Select team" name="teamName" style="text-align: center;" readonly="readonly">		
 		</form>	
 	</div>
+</div>
+<div style="border:1px soild; float:left; width:85%; ">
+	<img id="logo" src="${ contextPath }/image/NBA logo.jpg" width="100%">
+	
 </div>
 
 

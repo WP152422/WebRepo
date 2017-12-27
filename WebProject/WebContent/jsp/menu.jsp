@@ -18,9 +18,10 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
   	<ul class="navbar-nav mr-auto">
-	  <li class="nav-item" onmouseover="menu_over(this);" onmouseout="menu_out(this);" >
-	    <a id="menu1" class="nav-link" href="${ contextPath }/jsp/subscribe.jsp">Subscribe<span class="sr-only">(current)</span></a>
+  	  <li class="nav-item" onmouseover="menu_over(this);" onmouseout="menu_out(this);" >
+	    <a id="menu1" class="nav-link" href="${ contextPath }/jsp/dailygame.jsp">Today<span class="sr-only">(current)</span></a>
 	  </li>
+	  
 	  <li class="nav-item dropdown">
 	  	<a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
 		    About Team
@@ -34,7 +35,7 @@
 	    <a id="menu1" class="nav-link" href="${ contextPath }/jsp/playerprofile.jsp">About Player<span class="sr-only">(current)</span></a>
 	  </li>
 	  <li class="nav-item" onmouseover="menu_over(this);" onmouseout="menu_out(this);" >
-	    <a id="menu1" class="nav-link" href="${ contextPath }/jsp/dailygame.jsp">Daily<span class="sr-only">(current)</span></a>
+	    <a id="menu1" class="nav-link" href="${ contextPath }/jsp/subscribe.jsp">Subscribe<span class="sr-only">(current)</span></a>
 	  </li>
 	</ul>
     
